@@ -101,9 +101,9 @@ export class Level {
             },
             obstacles: {
                 types: [
-                    { name: 'cactus', width: 30, height: 60, weight: 1.0 },
-                    { name: 'rock', width: 40, height: 25, weight: 1.0 },
-                    { name: 'tumbleweed', width: 35, height: 35, weight: 1.0 }
+                    { name: 'cactus', width: 60, height: 120, weight: 1.0 },
+                    { name: 'rock', width: 80, height: 50, weight: 1.0 },
+                    { name: 'tumbleweed', width: 70, height: 70, weight: 1.0 }
                 ],
                 generation: {
                     count: 15,

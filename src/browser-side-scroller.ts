@@ -33,14 +33,14 @@ export class BrowserSideScroller {
         
         this.player = {
             x: 50,
-            y: this.canvas.height - 90,
-            width: 40,
-            height: 40,
+            y: this.canvas.height - 130,
+            width: 80,
+            height: 80,
             color: '#00ff00',
             velocityY: 0,
             isJumping: false,
-            jumpPower: 10.6,
-            gravity: 0.2
+            jumpPower: 21.2,
+            gravity: 0.25
         };
 
         this.playerSprite = new Image();
@@ -74,7 +74,7 @@ export class BrowserSideScroller {
         
         // Update player position relative to new canvas height
         if (this.player) {
-            this.player.y = this.canvas.height - 90;
+            this.player.y = this.canvas.height - 130;
         }
         
         // Recreate level with new canvas height
@@ -202,7 +202,7 @@ export class BrowserSideScroller {
         
         // Reset player position and state
         this.player.x = 50;
-        this.player.y = this.canvas.height - 90;
+        this.player.y = this.canvas.height - 130;
         this.player.velocityY = 0;
         this.player.isJumping = false;
         
