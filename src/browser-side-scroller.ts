@@ -1,4 +1,5 @@
 import { Level } from './level';
+import { GameOverMessage } from './game-over-message';
 
 export class BrowserSideScroller {
     private canvas: HTMLCanvasElement;
@@ -11,6 +12,7 @@ export class BrowserSideScroller {
     private cameraX: number = 0;
     private gameSpeed: number = 2;
     private playerSpritePath: string = '/sprites/sonic-player.svg';
+    private gameOverMessage: GameOverMessage;
     private player: {
         x: number;
         y: number;
@@ -45,6 +47,7 @@ export class BrowserSideScroller {
         this.loadPlayerSprite();
 
         this.level = new Level(this.canvas.height);
+        this.gameOverMessage = new GameOverMessage();
         this.setupEventListeners();
     }
 
@@ -143,6 +146,7 @@ export class BrowserSideScroller {
         const playerWorldX = this.player.x + this.cameraX;
         if (this.level.checkCollision(playerWorldX, this.player.y, this.player.width, this.player.height)) {
             this.gameRunning = false;
+            this.gameOverMessage.reset();
             console.log('Game Over! Hit an obstacle.');
         }
     }
@@ -170,21 +174,16 @@ export class BrowserSideScroller {
         }
 
         // Draw UI
-        this.ctx.fillStyle = '#000';
-        this.ctx.font = '16px Arial';
-        this.ctx.fillText('Press SPACE to jump', 10, 30);
-        this.ctx.fillText(`Distance: ${Math.floor(this.cameraX / 10)}m`, 10, 50);
-        
-        if (!this.gameRunning) {
-            this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-            this.ctx.fillStyle = '#fff';
-            this.ctx.font = '32px Arial';
-            this.ctx.textAlign = 'center';
-            this.ctx.fillText('Game Over!', this.canvas.width / 2, this.canvas.height / 2);
+        if (this.gameRunning) {
+            this.ctx.fillStyle = '#000';
             this.ctx.font = '16px Arial';
-            this.ctx.fillText('Press ENTER to restart', this.canvas.width / 2, this.canvas.height / 2 + 40);
-            this.ctx.textAlign = 'left';
+            this.ctx.fillText('Press SPACE to jump', 10, 30);
+            this.ctx.fillText(`Distance: ${Math.floor(this.cameraX / 10)}m`, 10, 50);
+        } else {
+            // Draw game over screen with animations
+            const distance = this.cameraX;
+            const deltaTime = Date.now() - this.lastTime;
+            this.gameOverMessage.render(this.ctx, this.canvas.width, this.canvas.height, distance, deltaTime);
         }
     }
 
@@ -211,8 +210,9 @@ export class BrowserSideScroller {
         this.cameraX = 0;
         this.gameRunning = true;
         
-        // Reset level
+        // Reset level and game over message
         this.level = new Level(this.canvas.height);
+        this.gameOverMessage.reset();
         
         // Clear any held keys
         this.keys = {};
