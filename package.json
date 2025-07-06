@@ -1,0 +1,26 @@
+{
+  "name": "browser-side-scroller",
+  "version": "1.0.0",
+  "description": "A browser side scroller game",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steven-coding/browser-side-scroller.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/steven-coding/browser-side-scroller/issues"
+  },
+  "homepage": "https://github.com/steven-coding/browser-side-scroller#readme",
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vite": "^5.4.19"
+  }
+}

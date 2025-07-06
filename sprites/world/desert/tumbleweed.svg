@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35">
+  <!-- Tumbleweed main body -->
+  <circle cx="17.5" cy="17.5" r="16" fill="none" stroke="#8B7355" stroke-width="2"/>
+  
+  <!-- Inner branches -->
+  <circle cx="17.5" cy="17.5" r="12" fill="none" stroke="#A0956B" stroke-width="1.5"/>
+  <circle cx="17.5" cy="17.5" r="8" fill="none" stroke="#CD853F" stroke-width="1"/>
+  
+  <!-- Crosshatch pattern -->
+  <line x1="5" y1="5" x2="30" y2="30" stroke="#8B7355" stroke-width="1"/>
+  <line x1="30" y1="5" x2="5" y2="30" stroke="#8B7355" stroke-width="1"/>
+  <line x1="17.5" y1="2" x2="17.5" y2="33" stroke="#A0956B" stroke-width="1"/>
+  <line x1="2" y1="17.5" x2="33" y2="17.5" stroke="#A0956B" stroke-width="1"/>
+  
+  <!-- Random twigs -->
+  <line x1="8" y1="12" x2="15" y2="8" stroke="#CD853F" stroke-width="0.8"/>
+  <line x1="22" y1="10" x2="28" y2="15" stroke="#CD853F" stroke-width="0.8"/>
+  <line x1="25" y1="22" x2="20" y2="28" stroke="#CD853F" stroke-width="0.8"/>
+  <line x1="10" y1="25" x2="6" y2="20" stroke="#CD853F" stroke-width="0.8"/>
+  <line x1="12" y1="17" x2="8" y2="22" stroke="#CD853F" stroke-width="0.8"/>
+  <line x1="23" y1="17" x2="28" y2="12" stroke="#CD853F" stroke-width="0.8"/>
+</svg>

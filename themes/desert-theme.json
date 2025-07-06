@@ -1,0 +1,62 @@
+{
+  "name": "Desert",
+  "spritePath": "sprites/world/desert",
+  "background": {
+    "skyGradient": {
+      "top": "#FFE4B5",
+      "bottom": "#DEB887"
+    },
+    "mountains": {
+      "color": "#CD853F",
+      "parallaxSpeed": 0.3,
+      "points": [
+        { "x": 0, "y": 150 },
+        { "x": 200, "y": 200 },
+        { "x": 400, "y": 180 },
+        { "x": 600, "y": 220 },
+        { "x": 800, "y": 160 },
+        { "x": 1000, "y": 150 }
+      ]
+    }
+  },
+  "ground": {
+    "color": "#F4A460",
+    "textureColor": "#DEB887",
+    "height": 50,
+    "textureSize": 20,
+    "textureDensity": 0.7
+  },
+  "obstacles": {
+    "types": [
+      {
+        "name": "cactus",
+        "width": 30,
+        "height": 60,
+        "weight": 1.0
+      },
+      {
+        "name": "rock",
+        "width": 40,
+        "height": 25,
+        "weight": 1.0
+      },
+      {
+        "name": "tumbleweed",
+        "width": 35,
+        "height": 35,
+        "weight": 1.0
+      }
+    ],
+    "generation": {
+      "count": 15,
+      "minDistance": 400,
+      "maxDistance": 800,
+      "startDistance": 200,
+      "safeZoneDistance": 1000
+    },
+    "fallbackColor": "#8B4513"
+  },
+  "world": {
+    "width": 2000
+  }
+}

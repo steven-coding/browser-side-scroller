@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="40" height="25" viewBox="0 0 40 25">
+  <!-- Main rock body -->
+  <ellipse cx="20" cy="18" rx="18" ry="7" fill="#8B7355" stroke="#5D4E37" stroke-width="2"/>
+  
+  <!-- Rock details -->
+  <ellipse cx="12" cy="15" rx="8" ry="5" fill="#A0956B" stroke="#5D4E37" stroke-width="1"/>
+  <ellipse cx="28" cy="16" rx="6" ry="4" fill="#A0956B" stroke="#5D4E37" stroke-width="1"/>
+  
+  <!-- Cracks and texture -->
+  <path d="M 8 18 Q 15 15 22 18" stroke="#5D4E37" stroke-width="1" fill="none"/>
+  <path d="M 18 20 Q 25 17 32 20" stroke="#5D4E37" stroke-width="1" fill="none"/>
+  
+  <!-- Small pebbles -->
+  <circle cx="10" cy="20" r="1" fill="#5D4E37"/>
+  <circle cx="30" cy="21" r="1" fill="#5D4E37"/>
+  <circle cx="20" cy="22" r="0.8" fill="#5D4E37"/>
+</svg>
