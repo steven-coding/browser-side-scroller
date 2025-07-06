@@ -52,7 +52,9 @@
       "minDistance": 400,
       "maxDistance": 800,
       "startDistance": 200,
-      "safeZoneDistance": 1000
+      "safeZoneDistance": 1000,
+      "doubleObstacleChance": 0.3,
+      "doubleObstacleSpacing": 10
     },
     "fallbackColor": "#8B4513"
   },

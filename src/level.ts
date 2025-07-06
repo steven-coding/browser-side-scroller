@@ -38,6 +38,8 @@ interface ThemeConfig {
             maxDistance: number;
             startDistance: number;
             safeZoneDistance: number;
+            doubleObstacleChance: number;
+            doubleObstacleSpacing: number;
         };
         fallbackColor: string;
     };
@@ -52,6 +54,7 @@ export class Level {
     private theme: ThemeConfig;
     private canvasHeight: number;
     private cameraX: number = 0;
+    private lastObstacleX: number = 0;
 
     constructor(canvasHeight: number, themePath: string = '/themes/desert-theme.json') {
         this.canvasHeight = canvasHeight;
@@ -63,7 +66,7 @@ export class Level {
             const response = await fetch(themePath);
             this.theme = await response.json();
             this.loadSprites();
-            this.generateObstacles();
+            this.generateInitialObstacles();
         } catch (error) {
             console.error('Failed to load theme:', error);
             this.loadDefaultTheme();
@@ -107,14 +110,16 @@ export class Level {
                     minDistance: 400,
                     maxDistance: 800,
                     startDistance: 200,
-                    safeZoneDistance: 1000
+                    safeZoneDistance: 1000,
+                    doubleObstacleChance: 0.3,
+                    doubleObstacleSpacing: 10
                 },
                 fallbackColor: '#8B4513'
             },
             world: { width: 2000 }
         };
         this.loadSprites();
-        this.generateObstacles();
+        this.generateInitialObstacles();
     }
 
     private loadSprites(): void {
@@ -127,33 +132,87 @@ export class Level {
         });
     }
 
-    private generateObstacles(): void {
+    private generateInitialObstacles(): void {
         if (!this.theme) return;
         
         const config = this.theme.obstacles;
         let currentX = config.generation.startDistance + config.generation.safeZoneDistance;
         
         for (let i = 0; i < config.generation.count; i++) {
-            const obstacleType = config.types[Math.floor(Math.random() * config.types.length)];
+            currentX = this.generateObstacleAtPosition(currentX);
+        }
+        
+        this.lastObstacleX = currentX;
+    }
+
+    private generateObstacleAtPosition(currentX: number): number {
+        if (!this.theme) return currentX;
+        
+        const config = this.theme.obstacles;
+        const obstacleType = config.types[Math.floor(Math.random() * config.types.length)];
+        
+        const y = this.canvasHeight - this.theme.ground.height - obstacleType.height;
+        
+        // Generate first obstacle
+        this.obstacles.push({
+            x: currentX,
+            y: y,
+            width: obstacleType.width,
+            height: obstacleType.height,
+            sprite: this.sprites[obstacleType.name],
+            type: obstacleType.name
+        });
+        
+        let nextX = currentX;
+        
+        // Check if we should generate a double obstacle
+        if (Math.random() < config.generation.doubleObstacleChance) {
+            const secondObstacleType = config.types[Math.floor(Math.random() * config.types.length)];
+            const secondY = this.canvasHeight - this.theme.ground.height - secondObstacleType.height;
             
-            const y = this.canvasHeight - this.theme.ground.height - obstacleType.height;
+            nextX = currentX + obstacleType.width + config.generation.doubleObstacleSpacing;
             
+            // Generate second obstacle close behind the first
             this.obstacles.push({
-                x: currentX,
-                y: y,
-                width: obstacleType.width,
-                height: obstacleType.height,
-                sprite: this.sprites[obstacleType.name],
-                type: obstacleType.name
+                x: nextX,
+                y: secondY,
+                width: secondObstacleType.width,
+                height: secondObstacleType.height,
+                sprite: this.sprites[secondObstacleType.name],
+                type: secondObstacleType.name
             });
             
-            currentX += config.generation.minDistance + 
-                       Math.random() * (config.generation.maxDistance - config.generation.minDistance);
+            nextX += secondObstacleType.width;
+        } else {
+            nextX += obstacleType.width;
         }
+        
+        return nextX + config.generation.minDistance + 
+               Math.random() * (config.generation.maxDistance - config.generation.minDistance);
+    }
+
+    private generateNewObstacles(): void {
+        if (!this.theme) return;
+        
+        const config = this.theme.obstacles;
+        const generateAheadDistance = 1500; // Generate obstacles 1500px ahead of camera
+        
+        while (this.lastObstacleX < this.cameraX + generateAheadDistance) {
+            this.lastObstacleX = this.generateObstacleAtPosition(this.lastObstacleX);
+        }
+        
+        // Clean up obstacles that are far behind the camera
+        const cleanupDistance = 500;
+        this.obstacles = this.obstacles.filter(obstacle => 
+            obstacle.x > this.cameraX - cleanupDistance
+        );
     }
 
     public render(ctx: CanvasRenderingContext2D, cameraX: number): void {
         this.cameraX = cameraX;
+        
+        // Generate new obstacles as needed
+        this.generateNewObstacles();
         
         // Draw desert background
         this.drawBackground(ctx);

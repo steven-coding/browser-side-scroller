@@ -37,8 +37,8 @@ export class BrowserSideScroller {
             color: '#00ff00',
             velocityY: 0,
             isJumping: false,
-            jumpPower: 15,
-            gravity: 0.4
+            jumpPower: 10.6,
+            gravity: 0.2
         };
 
         this.playerSprite = new Image();
@@ -82,20 +82,26 @@ export class BrowserSideScroller {
 
     private setupEventListeners(): void {
         document.addEventListener('keydown', (e) => {
+            console.log('Key pressed:', e.key, 'Game running:', this.gameRunning);
             this.keys[e.key] = true;
-            e.preventDefault();
+            
+            // Restart game on Enter when game is over
+            if (e.key === 'Enter' && !this.gameRunning) {
+                console.log('Attempting to restart game...');
+                this.restartGame();
+                e.preventDefault();
+                return;
+            }
+            
+            // Prevent scrolling on space bar and arrow keys
+            if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Enter'].includes(e.code)) {
+                e.preventDefault();
+            }
         });
 
         document.addEventListener('keyup', (e) => {
             this.keys[e.key] = false;
             e.preventDefault();
-        });
-
-        // Prevent scrolling on space bar and arrow keys
-        document.addEventListener('keydown', (e) => {
-            if (['Space', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.code)) {
-                e.preventDefault();
-            }
         });
     }
 
@@ -177,7 +183,7 @@ export class BrowserSideScroller {
             this.ctx.textAlign = 'center';
             this.ctx.fillText('Game Over!', this.canvas.width / 2, this.canvas.height / 2);
             this.ctx.font = '16px Arial';
-            this.ctx.fillText('Refresh to play again', this.canvas.width / 2, this.canvas.height / 2 + 40);
+            this.ctx.fillText('Press ENTER to restart', this.canvas.width / 2, this.canvas.height / 2 + 40);
             this.ctx.textAlign = 'left';
         }
     }
@@ -190,5 +196,30 @@ export class BrowserSideScroller {
 
     public stop(): void {
         this.gameRunning = false;
+    }
+
+    private restartGame(): void {
+        console.log('Restarting game...');
+        
+        // Reset player position and state
+        this.player.x = 50;
+        this.player.y = this.canvas.height - 90;
+        this.player.velocityY = 0;
+        this.player.isJumping = false;
+        
+        // Reset camera and game state
+        this.cameraX = 0;
+        this.gameRunning = true;
+        
+        // Reset level
+        this.level = new Level(this.canvas.height);
+        
+        // Clear any held keys
+        this.keys = {};
+        
+        // Restart the game loop
+        requestAnimationFrame(this.gameLoop);
+        
+        console.log('Game restarted successfully!');
     }
 }
