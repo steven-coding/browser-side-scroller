@@ -1,3 +1,5 @@
+import { getAssetPath } from './utils';
+
 interface Obstacle {
     x: number;
     y: number;
@@ -63,9 +65,7 @@ export class Level {
 
     private async loadTheme(themePath: string): Promise<void> {
         try {
-            const basePath = import.meta.env.BASE_URL || '/';
-            const fullThemePath = basePath.endsWith('/') ? basePath + themePath.slice(1) : basePath + themePath;
-            const response = await fetch(fullThemePath);
+            const response = await fetch(getAssetPath(themePath));
             this.theme = await response.json();
             this.loadSprites();
             this.generateInitialObstacles();
@@ -129,9 +129,8 @@ export class Level {
         
         this.theme.obstacles.types.forEach(obstacleType => {
             const img = new Image();
-            const basePath = import.meta.env.BASE_URL || '/';
             const spritePath = `/${this.theme.spritePath}/${obstacleType.name}.svg`;
-            img.src = basePath.endsWith('/') ? basePath + spritePath.slice(1) : basePath + spritePath;
+            img.src = getAssetPath(spritePath);
             this.sprites[obstacleType.name] = img;
         });
     }

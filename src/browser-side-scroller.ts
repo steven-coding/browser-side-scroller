@@ -1,5 +1,6 @@
 import { Level } from './level';
 import { GameOverMessage } from './game-over-message';
+import { getAssetPath } from './utils';
 
 export class BrowserSideScroller {
     private canvas: HTMLCanvasElement;
@@ -55,7 +56,7 @@ export class BrowserSideScroller {
         if (spritePath) {
             this.playerSpritePath = spritePath;
         }
-        this.playerSprite.src = this.playerSpritePath;
+        this.playerSprite.src = getAssetPath(this.playerSpritePath);
     }
 
     public setPlayerSprite(spritePath: string): void {

@@ -1,3 +1,5 @@
+import { getAssetPath } from './utils';
+
 export class GameOverMessage {
     private cupSprite: HTMLImageElement;
     private animationTime: number = 0;
@@ -6,7 +8,7 @@ export class GameOverMessage {
 
     constructor() {
         this.cupSprite = new Image();
-        this.cupSprite.src = '/sprites/winners-cup.svg';
+        this.cupSprite.src = getAssetPath('/sprites/winners-cup.svg');
     }
 
     public render(
