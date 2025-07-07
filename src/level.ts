@@ -63,7 +63,9 @@ export class Level {
 
     private async loadTheme(themePath: string): Promise<void> {
         try {
-            const response = await fetch(themePath);
+            const basePath = import.meta.env.BASE_URL || '/';
+            const fullThemePath = basePath.endsWith('/') ? basePath + themePath.slice(1) : basePath + themePath;
+            const response = await fetch(fullThemePath);
             this.theme = await response.json();
             this.loadSprites();
             this.generateInitialObstacles();
@@ -127,7 +129,9 @@ export class Level {
         
         this.theme.obstacles.types.forEach(obstacleType => {
             const img = new Image();
-            img.src = `/${this.theme.spritePath}/${obstacleType.name}.svg`;
+            const basePath = import.meta.env.BASE_URL || '/';
+            const spritePath = `/${this.theme.spritePath}/${obstacleType.name}.svg`;
+            img.src = basePath.endsWith('/') ? basePath + spritePath.slice(1) : basePath + spritePath;
             this.sprites[obstacleType.name] = img;
         });
     }
