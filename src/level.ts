@@ -51,7 +51,7 @@ interface ThemeConfig {
 export class Level {
     private obstacles: Obstacle[] = [];
     private sprites: { [key: string]: HTMLImageElement } = {};
-    private theme: ThemeConfig;
+    private theme!: ThemeConfig;
     private canvasHeight: number;
     private cameraX: number = 0;
     private lastObstacleX: number = 0;
@@ -194,7 +194,6 @@ export class Level {
     private generateNewObstacles(): void {
         if (!this.theme) return;
         
-        const config = this.theme.obstacles;
         const generateAheadDistance = 1500; // Generate obstacles 1500px ahead of camera
         
         while (this.lastObstacleX < this.cameraX + generateAheadDistance) {

@@ -108,19 +108,17 @@ export class BrowserSideScroller {
         });
     }
 
-    private gameLoop = (currentTime: number): void => {
+    private gameLoop = (): void => {
         if (!this.gameRunning) return;
 
-        const deltaTime = currentTime - this.lastTime;
-        this.lastTime = currentTime;
-
-        this.update(deltaTime);
+        this.update();
         this.render();
 
         requestAnimationFrame(this.gameLoop);
     }
 
-    private update(deltaTime: number): void {
+    private update(): void {
+
         // Jump
         if (this.keys[' '] && !this.player.isJumping) {
             this.player.velocityY = -this.player.jumpPower;
