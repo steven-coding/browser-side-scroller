@@ -1,4 +1,4 @@
-import { getAssetPath } from './utils';
+import { getAssetPath, isMobileDevice } from './utils';
 
 export class GameOverMessage {
     private cupSprite: HTMLImageElement;
@@ -82,7 +82,8 @@ export class GameOverMessage {
         const pulseAlpha = 0.7 + 0.3 * Math.sin(this.animationTime * 0.005);
         ctx.fillStyle = `rgba(255, 255, 255, ${pulseAlpha})`;
         ctx.font = 'bold 20px Arial';
-        ctx.fillText('Press ENTER to restart', centerX, centerY + 180);
+        const restartText = isMobileDevice() ? 'Tap to restart' : 'Press ENTER to restart';
+        ctx.fillText(restartText, centerX, centerY + 180);
         
         // Decorative elements
         this.drawStars(ctx, centerX, centerY, opacity);

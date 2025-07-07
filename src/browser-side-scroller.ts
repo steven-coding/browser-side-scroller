@@ -1,6 +1,6 @@
 import { Level } from './level';
 import { GameOverMessage } from './game-over-message';
-import { getAssetPath } from './utils';
+import { getAssetPath, isMobileDevice } from './utils';
 
 export class BrowserSideScroller {
     private canvas: HTMLCanvasElement;
@@ -107,6 +107,27 @@ export class BrowserSideScroller {
             this.keys[e.key] = false;
             e.preventDefault();
         });
+
+        // Touch events for mobile devices
+        if (isMobileDevice()) {
+            this.canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                
+                if (!this.gameRunning) {
+                    // Restart game on touch when game is over
+                    console.log('Touch detected, attempting to restart game...');
+                    this.restartGame();
+                } else {
+                    // Jump on touch during gameplay
+                    this.keys[' '] = true;
+                }
+            });
+
+            this.canvas.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                this.keys[' '] = false;
+            });
+        }
     }
 
     private gameLoop = (): void => {
