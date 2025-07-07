@@ -1,4 +1,20 @@
 import { defineConfig } from 'vite'
+import { copyFileSync, mkdirSync, readdirSync, statSync } from 'fs'
+import { join } from 'path'
+
+const copyDir = (src: string, dest: string) => {
+  mkdirSync(dest, { recursive: true })
+  const entries = readdirSync(src)
+  for (const entry of entries) {
+    const srcPath = join(src, entry)
+    const destPath = join(dest, entry)
+    if (statSync(srcPath).isDirectory()) {
+      copyDir(srcPath, destPath)
+    } else {
+      copyFileSync(srcPath, destPath)
+    }
+  }
+}
 
 export default defineConfig({
   base: '/browser-side-scroller',
@@ -28,5 +44,14 @@ export default defineConfig({
     assetsInlineLimit: 4096,
     cssCodeSplit: true,
     reportCompressedSize: false
-  }
+  },
+  plugins: [
+    {
+      name: 'copy-assets',
+      closeBundle() {
+        copyDir('themes', 'dist/themes')
+        copyDir('sprites', 'dist/sprites')
+      }
+    }
+  ]
 })
